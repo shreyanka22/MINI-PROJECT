@@ -12,7 +12,7 @@ app = Flask(__name__)
 data = pd.read_csv('Cow1.csv')  # Replace with the actual path to your dataset
 X = data.drop('Estrus', axis=1)
 y = data['Estrus']
-X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.2, random_state=30)
+X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.1, random_state=60)
 
 # Initialize the classifier
 classifier = SVC(kernel='linear', C=1, probability=True)  # Set probability to True
@@ -49,13 +49,17 @@ def predict():
         return jsonify({'error': str(e)})
 
 # Route to display the overall accuracy score in the frontend
-@app.route('/accuracy')
-def accuracy():
-    # Calculate overall accuracy score
-    y_pred = classifier.predict(X_test)
-    acc = accuracy_score(y_test, y_pred) * 100  # Multiply by 100 to get percentage
+@app.route('/get_accuracy', methods=['GET'])
+def get_accuracy():
+    try:
+        # Calculate overall accuracy score
+        y_pred = classifier.predict(X_test)
+        acc = accuracy_score(y_test, y_pred)
 
-    return render_template('accuracy.html', accuracy=acc)
+        return jsonify({'accuracy': acc})
+
+    except Exception as e:
+        return jsonify({'error': str(e)})
 
 # Route for rendering the HTML page
 @app.route('/')
