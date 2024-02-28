@@ -33,7 +33,17 @@
             filter: blur(5px);
             z-index: -1;
         }
+        #result {
+            margin-top: 20px;
+            font-weight: bold;
+            color: white; /* Set the text color to white */
+        }
 
+        #accuracy {
+            margin-top: 20px;
+            font-weight: bold;
+            color: white; /* Set the text color to white */
+        }
         .container {
             text-align: center;
             margin-top: 20px;
@@ -197,8 +207,9 @@
 
             <button type="submit">Predict</button>
         </form>
-
         <div id="result"></div>
+        <div id="accuracy"></div>
+
     </div>
 
     <footer>
@@ -209,7 +220,7 @@
     <script>
         function calculateResult() {
             event.preventDefault();
-
+    
             // Get values for all features
             var restlessness = parseInt(document.getElementById('restlessness').value);
             var standing_to_be_mounted = parseInt(document.getElementById('standing_to_be_mounted').value);
@@ -218,7 +229,7 @@
             var sniffing_nudging = parseInt(document.getElementById('sniffing_nudging').value);
             var tail_flagging = parseInt(document.getElementById('tail_flagging').value);
             var mooing = parseInt(document.getElementById('mooing').value);
-
+    
             var formData = new FormData();
             formData.append('restlessness', restlessness);
             formData.append('standing_to_be_mounted', standing_to_be_mounted);
@@ -227,7 +238,21 @@
             formData.append('sniffing_nudging', sniffing_nudging);
             formData.append('tail_flagging', tail_flagging);
             formData.append('mooing', mooing);
-
+    
+            // Make a request to get the accuracy score
+            fetch('/get_accuracy', {
+                method: 'GET',
+            })
+            .then(response => response.json())
+            .then(data => {
+                document.getElementById('accuracy').innerHTML = `Overall accuracy of the model is: ${data.accuracy.toFixed(2)}%`;
+            })
+            .catch(error => {
+                console.error('Fetch error:', error);
+                document.getElementById('accuracy').innerHTML = 'Error occurred while fetching accuracy.';
+            });
+    
+            // Make a request to get the prediction
             fetch('/predict', {
                 method: 'POST',
                 body: formData
@@ -241,12 +266,11 @@
             .then(data => {
                 document.getElementById('result').innerHTML = `Prediction: ${data.prediction === 1 ? 'In Estrus Cycle' : 'Not in Estrus Cycle'} with ${data.confidence.toFixed(2)}% confidence`;
             })
-
             .catch(error => {
                 console.error('Fetch error:', error);
                 document.getElementById('result').innerHTML = 'Error occurred during prediction.';
             });
-
+    
             return false;
         }
     </script>

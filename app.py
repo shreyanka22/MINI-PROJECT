@@ -15,12 +15,12 @@ y = data['Estrus']
 X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.2, random_state=30)
 
 # Initialize the classifier
-classifier = SVC(kernel='linear', C=1)
+classifier = SVC(kernel='linear', C=1, probability=True)  # Set probability to True
 classifier.fit(X_train, y_train)
 
 # Function to predict estrus using the machine learning model and return confidence
 def predict_estrus_with_confidence(input_data):
-    confidence = classifier.decision_function(input_data)
+    confidence = classifier.predict_proba(input_data)[:, 1]  # Probability of class 1
     prediction = classifier.predict(input_data)
     return prediction, confidence
 
@@ -47,6 +47,15 @@ def predict():
 
     except Exception as e:
         return jsonify({'error': str(e)})
+
+# Route to display the overall accuracy score in the frontend
+@app.route('/accuracy')
+def accuracy():
+    # Calculate overall accuracy score
+    y_pred = classifier.predict(X_test)
+    acc = accuracy_score(y_test, y_pred) * 100  # Multiply by 100 to get percentage
+
+    return render_template('accuracy.html', accuracy=acc)
 
 # Route for rendering the HTML page
 @app.route('/')
