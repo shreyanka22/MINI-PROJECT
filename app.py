@@ -20,7 +20,7 @@ classifier.fit(X_train, y_train)
 
 # Function to predict estrus using the machine learning model and return confidence
 def predict_estrus_with_confidence(input_data):
-    confidence = classifier.predict_proba(input_data)[:, 1]  # Probability of class 1
+    confidence = classifier.predict_proba(input_data)[:, 1] # Probability of class 1
     prediction = classifier.predict(input_data)
     return prediction, confidence
 
@@ -54,7 +54,7 @@ def get_accuracy():
     try:
         # Calculate overall accuracy score
         y_pred = classifier.predict(X_test)
-        acc = accuracy_score(y_test, y_pred)
+        acc = accuracy_score(y_test, y_pred)*100
 
         return jsonify({'accuracy': acc})
 

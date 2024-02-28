@@ -264,7 +264,7 @@
                 return response.json();
             })
             .then(data => {
-                document.getElementById('result').innerHTML = `Prediction: ${data.prediction === 0 ? 'In Estrus Cycle' : 'Not in Estrus Cycle'} with ${data.confidence.toFixed(2)}% confidence`;
+                document.getElementById('result').innerHTML = `Prediction: ${data.prediction === 1 ? 'In Estrus Cycle' : 'Not in Estrus Cycle'} with ${data.confidence.toFixed(2)}% confidence`;
             })
             .catch(error => {
                 console.error('Fetch error:', error);
