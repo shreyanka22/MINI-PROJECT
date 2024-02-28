@@ -1,0 +1,256 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Estrus Cycle Detection</title>
+    <style>
+        header {
+            text-align: center;
+            background-color: #134478;
+            color: #ede6e6;
+            padding: 5px 2;
+        }
+
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            position: relative;
+        }
+
+        body::before {
+            content: "";
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-image: url('https://cronkitenews.azpbs.org/wp-content/uploads/2019/04/dj-dairyfarm-6-2.jpg');
+            background-size: cover;
+            background-position: center;
+            background-attachment: fixed;
+            filter: blur(5px);
+            z-index: -1;
+        }
+
+        .container {
+            text-align: center;
+            margin-top: 20px;
+        }
+
+        label {
+            font-weight: bold;
+        }
+
+        select {
+            padding: 8px;
+            border-radius: 5px;
+            border: 1px solid #ccc;
+            background-color: rgb(242, 242, 243);
+            width: 180px;
+        }
+
+        button {
+            padding: 8px 20px;
+            border: none;
+            border-radius: 5px;
+            background-color: #4CAF50;
+            color: white;
+            font-weight: bold;
+        }
+
+        #result {
+            margin-top: 20px;
+            font-weight: bold;
+        }
+
+        footer {
+            position: fixed;
+            bottom: 0;
+            left: 0;
+            width: 100%;
+            background-color: #134478;
+            color: #ede6e6;
+            text-align: center;
+            padding: 10px 0;
+        }
+    </style>
+</head>
+
+<body>
+    <header>
+        <h1 style="color: rgb(248, 245, 245); font-size: 28px; font-weight: bold;">Estrus Cycle Detection</h1>
+    </header>
+    
+    <div class="container">
+        <form method="post" action="/predict" onsubmit="return calculateResult()">
+            <div style="text-align: center;">
+                <label for="restlessness" style="font-weight: bold; color: #fffdfd;">Restlessness:</label>
+                <select id="restlessness" name="restlessness">
+                    <option value="0">0</option>
+                    <option value="1">1</option>
+                    <option value="2">2</option>
+                    <option value="3">3</option>
+                    <option value="4">4</option>
+                    <option value="5">5</option>
+                    <option value="6">6</option>
+                    <option value="7">7</option>
+                    <option value="8">8</option>
+                    <option value="9">9</option>
+                    <option value="10">10</option>
+                </select><br><br><br>
+
+                <label for="standing_to_be_mounted" style="font-weight: bold; color: #fffdfd;">Standing to be mounted:</label>
+                <select id="standing_to_be_mounted" name="standing_to_be_mounted">
+                    <option value="0">0</option>
+                    <option value="1">1</option>
+                    <option value="2">2</option>
+                    <option value="3">3</option>
+                    <option value="4">4</option>
+                    <option value="5">5</option>
+                    <option value="6">6</option>
+                    <option value="7">7</option>
+                    <option value="8">8</option>
+                    <option value="9">9</option>
+                    <option value="10">10</option>
+                </select><br><br><br>
+
+                <label for="clear_mucus" style="font-weight: bold; color: #fffdfd;">Presence of clear mucus:</label>
+                <select id="clear_mucus" name="clear_mucus">
+                    <option value="0">0</option>
+                    <option value="1">1</option>
+                    <option value="2">2</option>
+                    <option value="3">3</option>
+                    <option value="4">4</option>
+                    <option value="5">5</option>
+                    <option value="6">6</option>
+                    <option value="7">7</option>
+                    <option value="8">8</option>
+                    <option value="9">9</option>
+                    <option value="10">10</option>
+                </select><br><br><br>
+
+                <label for="swelling_reddening_of_vulva" style="font-weight: bold; color: #fffdfd;">Swelling and reddening of vulva:</label>
+                <select id="swelling_reddening_of_vulva" name="swelling_reddening_of_vulva">
+                    <option value="0">0</option>
+                    <option value="1">1</option>
+                    <option value="2">2</option>
+                    <option value="3">3</option>
+                    <option value="4">4</option>
+                    <option value="5">5</option>
+                    <option value="6">6</option>
+                    <option value="7">7</option>
+                    <option value="8">8</option>
+                    <option value="9">9</option>
+                    <option value="10">10</option>
+                </select><br><br><br>
+
+                <label for="sniffing_nudging" style="font-weight: bold; color: #fffdfd;">Sniffing and Nudging:</label>
+                <select id="sniffing_nudging" name="sniffing_nudging">
+                    <option value="0">0</option>
+                    <option value="1">1</option>
+                    <option value="2">2</option>
+                    <option value="3">3</option>
+                    <option value="4">4</option>
+                    <option value="5">5</option>
+                    <option value="6">6</option>
+                    <option value="7">7</option>
+                    <option value="8">8</option>
+                    <option value="9">9</option>
+                    <option value="10">10</option>
+                </select><br><br><br>
+
+                <label for="tail_flagging" style="font-weight: bold; color: #fffdfd;">Tail Flagging:</label>
+                <select id="tail_flagging" name="tail_flagging">
+                    <option value="0">0</option>
+                    <option value="1">1</option>
+                    <option value="2">2</option>
+                    <option value="3">3</option>
+                    <option value="4">4</option>
+                    <option value="5">5</option>
+                    <option value="6">6</option>
+                    <option value="7">7</option>
+                    <option value="8">8</option>
+                    <option value="9">9</option>
+                    <option value="10">10</option>
+                </select><br><br><br>
+
+                <label for="mooing" style="font-weight: bold; color: #fffdfd;">Mooing:</label>
+                <select id="mooing" name="mooing">
+                    <option value="0">0</option>
+                    <option value="1">1</option>
+                    <option value="2">2</option>
+                    <option value="3">3</option>
+                    <option value="4">4</option>
+                    <option value="5">5</option>
+                    <option value="6">6</option>
+                    <option value="7">7</option>
+                    <option value="8">8</option>
+                    <option value="9">9</option>
+                    <option value="10">10</option>
+                </select><br><br><br>
+
+                <!-- Add dropdowns for other features -->
+
+            </div>
+
+            <button type="submit">Predict</button>
+        </form>
+
+        <div id="result"></div>
+    </div>
+
+    <footer>
+        &copy; Estrus Cycle Detection
+    </footer>
+
+
+    <script>
+        function calculateResult() {
+            event.preventDefault();
+
+            // Get values for all features
+            var restlessness = parseInt(document.getElementById('restlessness').value);
+            var standing_to_be_mounted = parseInt(document.getElementById('standing_to_be_mounted').value);
+            var clear_mucus = parseInt(document.getElementById('clear_mucus').value);
+            var swelling_reddening_of_vulva = parseInt(document.getElementById('swelling_reddening_of_vulva').value);
+            var sniffing_nudging = parseInt(document.getElementById('sniffing_nudging').value);
+            var tail_flagging = parseInt(document.getElementById('tail_flagging').value);
+            var mooing = parseInt(document.getElementById('mooing').value);
+
+            var formData = new FormData();
+            formData.append('restlessness', restlessness);
+            formData.append('standing_to_be_mounted', standing_to_be_mounted);
+            formData.append('clear_mucus', clear_mucus);
+            formData.append('swelling_reddening_of_vulva', swelling_reddening_of_vulva);
+            formData.append('sniffing_nudging', sniffing_nudging);
+            formData.append('tail_flagging', tail_flagging);
+            formData.append('mooing', mooing);
+
+            fetch('/predict', {
+                method: 'POST',
+                body: formData
+            })
+            .then(response => {
+                if (!response.ok) {
+                    throw new Error(`HTTP error! Status: ${response.status}`);
+                }
+                return response.json();
+            })
+            .then(data => {
+                document.getElementById('result').innerHTML = `Prediction: ${data.prediction === 1 ? 'In Estrus Cycle' : 'Not in Estrus Cycle'} with ${data.confidence.toFixed(2)}% confidence`;
+            })
+
+            .catch(error => {
+                console.error('Fetch error:', error);
+                document.getElementById('result').innerHTML = 'Error occurred during prediction.';
+            });
+
+            return false;
+        }
+    </script>
+
+
+</body>
+</html>
